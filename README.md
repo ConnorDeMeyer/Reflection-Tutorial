@@ -8,3 +8,7 @@ This tutorial covers how to make a header only simple reflections system that is
 ## Tutorial 1
 
 This video covered the basics on making type information available to any place inside of the project before the main function gets accessed.
+
+## Tutorial 2
+
+In this video we created the VariableId class that is capable of describing a class and its possible modifiers, like const, volatile, \*, &, &&, [].
