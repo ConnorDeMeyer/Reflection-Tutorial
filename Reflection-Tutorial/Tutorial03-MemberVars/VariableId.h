@@ -2,6 +2,7 @@
 
 #include "TypeInfo.h"
 #include <string>
+#include <unordered_map>
 
 class VariableId final
 {
