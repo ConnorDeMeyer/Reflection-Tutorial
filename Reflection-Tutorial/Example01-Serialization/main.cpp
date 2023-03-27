@@ -5,7 +5,8 @@
 #include <random>
 
 
-struct Vector
+#pragma warning(disable:4324) // disable padding warning
+struct alignas(16) Vector
 {
 	float X{}, Y{}, Z{};
 };
@@ -14,7 +15,7 @@ REGISTER_MEMBER(Vector, X);
 REGISTER_MEMBER(Vector, Y);
 REGISTER_MEMBER(Vector, Z);
 
-struct Quaternion
+struct alignas(16) Quaternion
 {
 	float X{}, Y{}, Z{}, W{};
 };
@@ -24,12 +25,11 @@ REGISTER_MEMBER(Quaternion, Y);
 REGISTER_MEMBER(Quaternion, Z);
 REGISTER_MEMBER(Quaternion, W);
 
-#pragma warning(disable:4324) // disable padding warning
 struct Transform
 {
-	alignas(16) Vector Translation {};
-	alignas(16) Quaternion Rotation {};
-	alignas(16) Vector Scale { 1, 1, 1 };
+	Vector Translation {};
+	Quaternion Rotation {};
+	Vector Scale { 1, 1, 1 };
 };
 #pragma warning(default:4324)
 
