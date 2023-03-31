@@ -10,6 +10,7 @@
 #include <list>
 #include <deque>
 #include <forward_list>
+#include <optional>
 
 inline void Serialize(std::ostream& stream, const std::string& value);
 inline void Deserialize(std::istream& stream, std::string& value);
@@ -133,6 +134,14 @@ inline void SerializeBinary(std::ostream& stream, const std::unordered_multimap<
 template <typename Key, typename Value>
 inline void DeserializeBinary(std::istream& stream, std::unordered_multimap<Key, Value>& value);
 
+template <typename T>
+inline void Serialize(std::ostream& stream, const std::optional<T>& value);
+template <typename T>
+inline void Deserialize(std::istream& stream, std::optional<T>& value);
+template <typename T>
+inline void SerializeBinary(std::ostream& stream, const std::optional<T>& value);
+template <typename T>
+inline void DeserializeBinary(std::istream& stream, std::optional<T>& value);
 
 /** CONCEPTS */
 

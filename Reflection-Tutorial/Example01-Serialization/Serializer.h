@@ -679,5 +679,55 @@ inline void DeserializeBinary(std::istream& stream, std::unordered_multimap<Key,
 	DeserializeBinaryMapContainer(stream, value);
 }
 
+/** OPTIONAL */
 
+template <typename T>
+inline void Serialize(std::ostream& stream, const std::optional<T>& value)
+{
+	stream << value.has_value();
+	if (value.has_value())
+	{
+		stream << ": ";
+		SerializeType(stream, *value);
+	}
+}
+
+template <typename T>
+inline void Deserialize(std::istream& stream, std::optional<T>& value)
+{
+	bool hasValue{};
+	stream >> hasValue;
+	if (hasValue)
+	{
+		char buffer{};
+		stream >> buffer;
+		assert(buffer == ':');
+
+		value.emplace();
+		DeserializeType(stream, &*value, TypeId::Create<T>());
+	}
+}
+
+template <typename T>
+inline void SerializeBinary(std::ostream& stream, const std::optional<T>& value)
+{
+	bool hasValue{ value.has_value() };
+	stream.write(reinterpret_cast<const char*>(&hasValue), sizeof(bool));
+	if (hasValue)
+	{
+		SerializeTypeBinary(stream, *value);
+	}
+}
+
+template <typename T>
+inline void DeserializeBinary(std::istream& stream, std::optional<T>& value)
+{
+	bool hasValue{};
+	stream.read(reinterpret_cast<char*>(&hasValue), sizeof(bool));
+	if (hasValue)
+	{
+		value.emplace();
+		DeserializeTypeBinary(stream, &*value, TypeId::Create<T>());
+	}
+}
 

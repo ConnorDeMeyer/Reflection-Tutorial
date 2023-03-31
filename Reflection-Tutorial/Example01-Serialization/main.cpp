@@ -31,7 +31,6 @@ struct Transform
 	Quaternion Rotation {};
 	Vector Scale { 1, 1, 1 };
 };
-#pragma warning(default:4324)
 
 REGISTER_MEMBER(Transform, Translation);
 REGISTER_MEMBER(Transform, Rotation);
@@ -101,6 +100,18 @@ REGISTER_MEMBER(TestClass, Deque);
 REGISTER_MEMBER(TestClass, List);
 REGISTER_MEMBER(TestClass, ForList);
 
+struct TestClass2
+{
+	std::optional<GameObject> OptGameObject{};
+	std::optional<Scene> OptScene{};
+	std::optional<GameObject> OptGameObject2{};
+};
+
+REGISTER_MEMBER(TestClass2, OptGameObject);
+REGISTER_MEMBER(TestClass2, OptScene);
+REGISTER_MEMBER(TestClass2, OptGameObject2);
+
+
 int main()
 {
 	{
@@ -155,6 +166,24 @@ int main()
 		SerializeType(std::cout, testClass);
 
 		std::cout << "\n\n";
+	}
+	{
+		TestClass2 test{};
+
+		test.OptGameObject.emplace().Randomize();
+		test.OptScene.emplace().GetOjects().emplace_back().Randomize();
+
+		SerializeType(std::cout, test);
+
+		std::stringstream copyStream;
+
+		SerializeTypeBinary(copyStream, test);
+		TestClass2 test2{};
+		DeserializeTypeBinary(copyStream, test2);
+
+		std::cout << "\n\n";
+
+		SerializeType(std::cout, test2);
 	}
 }
 
